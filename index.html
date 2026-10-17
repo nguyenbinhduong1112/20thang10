@@ -359,7 +359,6 @@
         <div class="quote" id="quote"></div>
         <div class="sign" id="sign"></div>
         <div class="btns" id="btns">
-          <!-- Đã xóa dòng chữ hướng dẫn bấm nút thả tim -->
         </div>
       </div>
     </div>
@@ -383,7 +382,7 @@
       
       const POOL = "ABCDEFGHIKLMNOPQRSTUVXYĂÂÊÔƠƯ0123456789";
       const rnd = (a) => Array.isArray(a) || typeof a === "string" ? a[Math.floor(Math.random() * a.length)] : 0;
-      const R = (a, b) => Math.random() * (b - a) + a;
+      const R = (a, b) => Math.random() * (b - a) + a; // Đã sửa lỗi mất dấu trừ ở đây
       const $ = (id) => document.getElementById(id);
 
       for (let i = 0; i < 60; i++) {
@@ -469,7 +468,6 @@
         if (++landed === total) {
           $("hint").textContent = "Giải mã thành công 💖";
           clearInterval(randomizerId); 
-          // Đã xóa hiệu ứng bão tim lúc vừa giải mã xong
           setTimeout(showCard, 1800);
         }
       }
@@ -564,12 +562,18 @@
           if (i < CFG.intro.length) {
             setTimeout(type, 40);
           } else {
-            // Khi gõ xong chữ cuối cùng mới tạo bão tim dồn dập 1 lần duy nhất
-            heartStorm();
-            
+            // Hiển thị các khối lời chúc
             document.querySelectorAll(".w").forEach((w, k) => setTimeout(() => w.classList.add("on"), k * 350));
+            // Hiện quote (câu trích dẫn)
             setTimeout(() => $("quote").classList.add("on2"), 1700);
-            setTimeout(() => $("sign").classList.add("on2"), 2500);
+            
+            // TRIGGER BÃO TIM NGAY KHI CHỮ KÝ XUẤT HIỆN Ở GIÂY 2.5
+            setTimeout(() => {
+                $("sign").classList.add("on2");
+                heartStorm(); // Bão tim được trigger ở đây
+            }, 2500);
+            
+            // Hiện các thành phần cuối cùng
             setTimeout(() => ($("btns").style.opacity = 1), 3000);
           }
         }, 1200);
@@ -597,7 +601,6 @@
       
       document.addEventListener("mouseleave", () => (cur.style.opacity = 0));
       
-      // Đã loại bỏ code lắng nghe click chuột và nhấn phím Space
     </script>
   </body>
 </html>
