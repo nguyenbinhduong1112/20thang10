@@ -382,7 +382,7 @@
       
       const POOL = "ABCDEFGHIKLMNOPQRSTUVXYĂÂÊÔƠƯ0123456789";
       const rnd = (a) => Array.isArray(a) || typeof a === "string" ? a[Math.floor(Math.random() * a.length)] : 0;
-      const R = (a, b) => Math.random() * (b - a) + a; // Đã sửa lỗi mất dấu trừ ở đây
+      const R = (a, b) => Math.random() * (b - a) + a;
       const $ = (id) => document.getElementById(id);
 
       for (let i = 0; i < 60; i++) {
@@ -487,12 +487,14 @@
           bgMusic.volume = 0;
           bgMusic.play().then(() => {
             let vol = 0;
+            // Xử lý hiệu ứng âm thanh to dần (fade-in) một cách chuẩn xác, tránh lỗi số thực
             const fadeAudio = setInterval(() => {
-              if (vol < 1.0) {
-                vol += 0.05;
-                bgMusic.volume = Math.min(vol, 1.0);
-              } else {
+              vol += 0.05;
+              if (vol >= 1.0) {
+                bgMusic.volume = 1.0;
                 clearInterval(fadeAudio);
+              } else {
+                bgMusic.volume = vol;
               }
             }, 100); 
           }).catch(e => console.log("Lỗi phát nhạc:", e));
